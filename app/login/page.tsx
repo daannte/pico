@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { jellyfinClient } from '@/lib/jellyfin';
-import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from "next/navigation"
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,17 +9,18 @@ import { Button } from '@/components/ui/button';
 import { Input, PrefixInput, PasswordInput } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useJellyfin } from '@/contexts/jellyfin-context';
 
 
 export default function Login() {
   const router = useRouter()
-  const { setIsAuthenticated, setFormData, formData } = useAuth()
+  const jellyfin = useJellyfin()
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
+    jellyfin.setFormData({
+      ...jellyfin.formData,
       [e.target.name]: e.target.value
     });
     setError('');
@@ -32,8 +31,7 @@ export default function Login() {
     setError('');
 
     try {
-      await jellyfinClient.authenticate(formData);
-      setIsAuthenticated(true);
+      jellyfin.login()
       router.replace("/")
     } catch (err: any) {
       setError(err.message || 'Authentication failed');
@@ -60,7 +58,7 @@ export default function Login() {
                 label="Server URL"
                 name="serverUrl"
                 type="url"
-                value={formData.serverUrl}
+                value={jellyfin.formData.serverUrl}
                 onChange={handleInputChange}
                 placeholder="your-jellyfin-server.com"
               />
@@ -74,7 +72,7 @@ export default function Login() {
                 id="username"
                 name="username"
                 type="text"
-                value={formData.username}
+                value={jellyfin.formData.username}
                 onChange={handleInputChange}
                 placeholder="Enter your username"
                 className="w-full"
@@ -83,7 +81,7 @@ export default function Login() {
 
             <PasswordInput
               name="password"
-              value={formData.password}
+              value={jellyfin.formData.password}
               onChange={handleInputChange}
             />
 

@@ -2,41 +2,31 @@
 
 import { useEffect, useState } from "react"
 import { getUserViewsApi, getItemsApi } from "@jellyfin/sdk/lib/utils/api"
-import { jellyfinClient } from "@/lib/jellyfin"
-import { useRouter } from "next/navigation"
 
-import { useAuth } from "@/contexts/auth-context"
 import ItemCard from "@/components/item-card"
+import { useJellyfin } from "@/contexts/jellyfin-context"
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
-  const router = useRouter()
-  const { isAuthenticated } = useAuth()
+  const { api, user, logout } = useJellyfin()
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      console.log("router")
-      router.replace("/login")
-      return
-    }
+    if (!api) return
 
     const fetchItems = async () => {
       try {
-        const japi = jellyfinClient.getApi()
-        const userId = jellyfinClient.getAuthResult().User?.Id
-        if (!userId) return
-
-        const api = getUserViewsApi(japi)
-        const views = await api.getUserViews({ userId })
+        const apiUser = getUserViewsApi(api!)
+        const views = await apiUser.getUserViews({ userId: user?.Id })
 
         const allItems: any[] = []
 
         for (const view of views.data.Items || []) {
           if (!view.Id) continue
 
-          const res = await getItemsApi(japi).getItems({
-            userId,
+          const res = await getItemsApi(api!).getItems({
+            userId: user?.Id,
             parentId: view.Id,
             recursive: true,
             enableImageTypes: ["Primary", "Backdrop", "Banner", "Thumb"],
@@ -57,17 +47,18 @@ export default function Home() {
     }
 
     fetchItems()
-  }, [isAuthenticated])
-
-  if (!isAuthenticated) return null
+  }, [api])
 
   if (loading) return <div>Loading...</div>
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-      {items.map((item) => (
-        <ItemCard key={item.Id} item={item} />
-      ))}
+    <div>
+      <Button onClick={() => logout()}>Logout</Button>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        {items.map((item) => (
+          <ItemCard key={item.Id} item={item} />
+        ))}
+      </div>
     </div>
   )
 }

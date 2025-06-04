@@ -2,15 +2,16 @@
 
 import Image from "next/image"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
-import { getItemImageUrl, jellyfinClient } from "@/lib/jellyfin"
+import { getItemImageUrl } from "@/lib/jellyfin"
+import { useJellyfin } from "@/contexts/jellyfin-context"
 
 interface ItemCardProps {
   item: BaseItemDto
 }
 
 export default function ItemCard({ item }: ItemCardProps) {
-  const api = jellyfinClient.getApi()
-  const imageUrl = getItemImageUrl({ item, api })
+  const { api } = useJellyfin()
+  const imageUrl = getItemImageUrl({ item, api: api! })
 
   return (
     <div className="rounded overflow-hidden bg-card shadow-md">
