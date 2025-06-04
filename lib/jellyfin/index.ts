@@ -1,3 +1,4 @@
 export { jellyfinClient } from './client'
+export { getItems } from "./items"
 
-export type { JellyfinConfig, AuthResult } from './client'
+export type { JellyfinConfig } from './client'

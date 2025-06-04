@@ -1,6 +1,15 @@
+"use client"
 
-export default async function Home() {
+import Login from "./login/page";
+
+import { useAuth } from "@/contexts/auth-context";
+
+export default function Home() {
+  const { isAuthenticated } = useAuth()
+
+  if (!isAuthenticated) return <Login />
+
   return (
-    <div>Hello world</div>
+    <div>Hello World</div>
   );
 }
