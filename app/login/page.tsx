@@ -79,6 +79,7 @@ export default function Login() {
             </div>
 
             <PasswordInput
+              name="password"
               value={formData.password}
               onChange={handleInputChange}
             />
