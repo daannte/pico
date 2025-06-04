@@ -1,4 +1,5 @@
 import { Jellyfin, Api } from '@jellyfin/sdk'
+import { AuthenticationResult } from "@jellyfin/sdk/lib/generated-client/models"
 
 export interface JellyfinConfig {
   serverUrl: string
@@ -6,16 +7,10 @@ export interface JellyfinConfig {
   password: string
 }
 
-export interface AuthResult {
-  accessToken: string
-  userId: string
-  serverUrl: string
-}
-
 class JellyfinClient {
   private jellyfin: Jellyfin
   private api: Api | null = null
-  private authResult: AuthResult | null = null
+  private authResult: AuthenticationResult | null = null
 
   constructor() {
     this.jellyfin = new Jellyfin({
@@ -24,18 +19,12 @@ class JellyfinClient {
     })
   }
 
-  async authenticate(config: JellyfinConfig): Promise<AuthResult> {
+  async authenticate(config: JellyfinConfig): Promise<AuthenticationResult> {
     this.api = this.jellyfin.createApi(`https://${config.serverUrl}`)
 
     try {
       const result = await this.api.authenticateUserByName(config.username, config.password)
-
-      this.authResult = {
-        accessToken: result.data.AccessToken!,
-        userId: result.data.User?.Id!,
-        serverUrl: config.serverUrl,
-      }
-
+      this.authResult = result.data
       return this.authResult
     } catch (err: any) {
       throw new Error('Authentication failed: ' + err.message)
@@ -49,7 +38,7 @@ class JellyfinClient {
     return this.api
   }
 
-  getAuthResult(): AuthResult {
+  getAuthResult(): AuthenticationResult {
     if (!this.authResult) {
       throw new Error('Not authenticated. Call authenticate() first.')
     }
