@@ -1,5 +1,5 @@
 import { Jellyfin, Api } from '@jellyfin/sdk'
-import { AuthenticationResult } from "@jellyfin/sdk/lib/generated-client/models"
+import type { AuthenticationResult } from "@jellyfin/sdk/lib/generated-client/models"
 
 export interface JellyfinConfig {
   serverUrl: string

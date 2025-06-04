@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { jellyfinClient } from '@/lib/jellyfin';
+import { useAuth } from '@/contexts/auth-context';
+import { useRouter } from "next/navigation"
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,10 +12,9 @@ import { Input, PrefixInput, PasswordInput } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-import { jellyfinClient } from '@/lib/jellyfin';
-import { useAuth } from '@/contexts/auth-context';
 
 export default function Login() {
+  const router = useRouter()
   const { setIsAuthenticated, setFormData, formData } = useAuth()
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,6 +34,7 @@ export default function Login() {
     try {
       await jellyfinClient.authenticate(formData);
       setIsAuthenticated(true);
+      router.replace("/")
     } catch (err: any) {
       setError(err.message || 'Authentication failed');
     } finally {
