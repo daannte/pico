@@ -16,10 +16,18 @@ export default function ItemCard({ item }: ItemCardProps) {
   const { api } = useJellyfin()
   const imageUrl = getItemImageUrl({ item, api: api! })
 
+  const handleOnClick = () => {
+    if (item.Type == "Movie") {
+      router.replace(`/movies/${item.Id}`)
+    } else if (item.Type == "Series") {
+      router.replace(`/series/${item.Id}`)
+    }
+  }
+
   return (
     <div
       className="group relative rounded-sm overflow-hidden bg-zinc-900 shadow-md transform transition-all duration-300 hover:z-10 cursor-pointer"
-      onClick={() => router.replace(`/series/${item.Id}`)}
+      onClick={handleOnClick}
     >
       <div className="relative aspect-[2/3]">
         {imageUrl ? (
