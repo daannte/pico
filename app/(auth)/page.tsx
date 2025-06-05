@@ -5,10 +5,9 @@ import { getUserViewsApi, getItemsApi } from "@jellyfin/sdk/lib/utils/api"
 
 import ItemCard from "@/components/item-card"
 import { useJellyfin } from "@/contexts/jellyfin-context"
-import { Button } from "@/components/ui/button"
 
 export default function Home() {
-  const { api, user, logout } = useJellyfin()
+  const { api, user } = useJellyfin()
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -49,11 +48,11 @@ export default function Home() {
     fetchItems()
   }, [api])
 
+  if (!user) return null
   if (loading) return <div>Loading...</div>
 
   return (
-    <div>
-      <Button onClick={() => logout()}>Logout</Button>
+    <div className="w-full p-8">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {items.map((item) => (
           <ItemCard key={item.Id} item={item} />

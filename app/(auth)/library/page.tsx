@@ -29,6 +29,8 @@ export default function Library() {
     fetchItems()
   }, [api])
 
+  if (!user) return null
+
   if (loading) return <div>Spinner</div>
 
   if (!views) return <div>No views</div>
