@@ -4,7 +4,6 @@ import { useId, useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 
 import Input from "./input"
-import { Label } from "@/components/ui/label"
 
 export default function PasswordInput({ ...inputProps }: React.ComponentProps<"input">) {
   const id = useId()
@@ -13,8 +12,7 @@ export default function PasswordInput({ ...inputProps }: React.ComponentProps<"i
   const toggleVisibility = () => setIsVisible((prevState) => !prevState)
 
   return (
-    <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>Password</Label>
+    <div className="mt-1">
       <div className="relative">
         <Input
           id={id}

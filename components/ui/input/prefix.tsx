@@ -1,7 +1,6 @@
 import { useId } from "react"
 
 import Input from "./input"
-import { Label } from "@/components/ui/label"
 
 interface PrefixInputProps extends React.ComponentProps<"input"> {
   label?: string
@@ -9,15 +8,13 @@ interface PrefixInputProps extends React.ComponentProps<"input"> {
 }
 
 export default function PrefixInput({
-  label = "Input",
   prefix = "https://",
   ...inputProps
 }: PrefixInputProps) {
   const id = useId()
 
   return (
-    <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>{label}</Label>
+    <div className="mt-1">
       <div className="relative">
         <Input
           id={id}

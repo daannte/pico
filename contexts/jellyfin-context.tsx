@@ -67,7 +67,7 @@ export function JellyfinProvider({ children }: { children: ReactNode }) {
         localStorage.setItem("token", AccessToken)
       }
     } catch (error: any) {
-      console.error(error)
+      throw new Error(error)
     }
   };
 
