@@ -173,7 +173,7 @@ export default function Series() {
                   {state.series.CommunityRating && (
                     <div className="text-md font-medium flex items-center gap-1">
                       <Star className="fill-yellow-400" size={20} />
-                      <span>{state.series.CommunityRating}</span>
+                      <span>{state.series.CommunityRating.toFixed(1)}</span>
                     </div>
                   )}
                 </div>
