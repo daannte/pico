@@ -27,6 +27,7 @@ export default function ItemCard({ item }: ItemCardProps) {
             src={imageUrl}
             alt={item.Name || "Media Item"}
             fill
+            sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (

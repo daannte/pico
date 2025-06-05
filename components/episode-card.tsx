@@ -31,6 +31,7 @@ export default function EpisodeCard({ item }: EpisodeCardProps) {
             src={imageUrl}
             alt={item.Name || "Episode"}
             fill
+            sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
@@ -43,6 +44,11 @@ export default function EpisodeCard({ item }: EpisodeCardProps) {
             </div>
           </div>
         )}
+
+        {!item.UserData?.Played && (
+          <div className="absolute top-2 right-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-yellow-300 shadow-sm"></div>
+        )}
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
