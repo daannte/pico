@@ -5,27 +5,31 @@ import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
 import { getItemImageUrl } from "@/lib/jellyfin"
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import { Play } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
-interface ItemCardProps {
+interface EpisodeCardProps {
   item: BaseItemDto
 }
 
-export default function ItemCard({ item }: ItemCardProps) {
+export default function EpisodeCard({ item }: EpisodeCardProps) {
+  const pathname = usePathname()
   const router = useRouter()
   const { api } = useJellyfin()
   const imageUrl = getItemImageUrl({ item, api: api! })
 
   return (
     <div
-      className="group relative rounded-sm overflow-hidden bg-zinc-900 shadow-md transform transition-all duration-300 hover:z-10 cursor-pointer"
-      onClick={() => router.replace(`/series/${item.Id}`)}
+      className="group relative rounded-md overflow-hidden bg-zinc-900 shadow-md transform transition-all duration-300 hover:z-10 cursor-pointer"
+      onClick={() => {
+        if (pathname.startsWith("/series")) return null
+        router.replace(`/series/${item.SeriesId}`)
+      }}
     >
-      <div className="relative aspect-[2/3]">
+      <div className="relative aspect-[5/3]">
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={item.Name || "Media Item"}
+            alt={item.Name || "Episode"}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
@@ -42,10 +46,13 @@ export default function ItemCard({ item }: ItemCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black to-transparent">
-        <h3 className="font-semibold text-xs mb-1 line-clamp-1">{item.Name}</h3>
+      <div className="absolute bottom-0 left-0 right-0 p-3 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black to-transparent">
+        {item.IndexNumber != null && (
+          <p className="text-xs text-zinc-400 mb-1">Episode {item.IndexNumber}</p>
+        )}
+        <h3 className="font-semibold text-sm line-clamp-1">{item.Name}</h3>
         {(item.ProductionYear || item.OfficialRating) && (
-          <div className="flex items-center space-x-1 text-xs text-zinc-300">
+          <div className="flex items-center space-x-1 text-xs text-zinc-300 mt-1">
             {item.ProductionYear && <span>{item.ProductionYear}</span>}
             {item.OfficialRating && (
               <>
