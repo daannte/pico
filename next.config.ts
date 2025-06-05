@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "media.shamblesroom.com",
         pathname: "/Items/**"
       },
+      {
+        protocol: "https",
+        hostname: "demo.jellyfin.org",
+        pathname: "/stable/Items/**"
+      },
     ],
   },
 };
