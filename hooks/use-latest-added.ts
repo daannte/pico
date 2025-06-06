@@ -21,7 +21,7 @@ export function useLatestAdded(options: ItemsApiGetItemsRequest = {}) {
   })
 
   const {
-    limit = 6,
+    limit = 10,
     includeItemTypes = ["Series", "Movie"],
     fields = ["PrimaryImageAspectRatio", "DateCreated"]
   } = options
