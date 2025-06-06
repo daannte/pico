@@ -138,9 +138,9 @@ export default function HomeSections() {
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-3">
-        <SectionsCard />
-        <SectionsCard />
-        <SectionsCard />
+        <SectionsCard title="Continue Watching" />
+        <SectionsCard title="Library" />
+        <SectionsCard title="Recently Added" />
       </div>
     </div>
   )
