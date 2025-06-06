@@ -22,6 +22,7 @@ export const CarouselTrailerThumbnail = ({ thumbnailUrl, onPlay }: CarouselTrail
           src={thumbnailUrl}
           alt="Trailer thumbnail"
           fill
+          sizes="w-96 h-48"
           className="object-cover"
         />
         <div className="absolute inset-0 flex items-center justify-center">
