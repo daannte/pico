@@ -22,7 +22,7 @@ export default function EpisodeCard({ item }: EpisodeCardProps) {
       className="group relative rounded-md overflow-hidden bg-zinc-900 shadow-md transform transition-all duration-300 hover:z-10 cursor-pointer"
       onClick={() => {
         if (pathname.startsWith("/series")) return null
-        router.replace(`/series/${item.SeriesId}`)
+        router.push(`/series/${item.SeriesId}`)
       }}
     >
       <div className="relative aspect-[5/3]">

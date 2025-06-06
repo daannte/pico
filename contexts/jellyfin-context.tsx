@@ -149,10 +149,8 @@ export function useProtectedRoute(user: UserDto | null, loaded = false) {
     const isAuthPage = pathname.startsWith("/login")
 
     if (!user?.Id && !isAuthPage) {
-      console.log("Redirecting to login");
-      router.replace("login");
+      router.replace("/login");
     } else if (user?.Id && isAuthPage) {
-      console.log("Redirecting to home");
       router.replace("/");
     }
   }, [user, pathname, loaded, router]);

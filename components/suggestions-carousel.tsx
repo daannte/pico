@@ -9,8 +9,10 @@ import { slideVariants, slideTransition } from "@/lib/carousel-utils"
 import { useSuggestions } from "@/hooks/use-suggestions"
 import { useAutoCarousel } from "@/hooks/use-auto-carousel"
 import { CarouselDots, CarouselContent } from "@/components/ui/suggestion-carousel"
+import { useRouter } from "next/navigation"
 
 export default function SuggestionsCarousel() {
+  const router = useRouter()
   const { api } = useJellyfin()
   const { suggestions, loading } = useSuggestions()
   const [isPaused, setIsPaused] = useState(false)
@@ -32,8 +34,11 @@ export default function SuggestionsCarousel() {
   }
 
   const handlePlay = () => {
-    // TODO: Implement play functionality
-    console.log("Play:", currentItem.Name)
+    if (currentItem.Type == "Series") {
+      router.push(`/series/${currentItem.Id}`)
+    } else if (currentItem.Type == "Movie") {
+      router.push(`/movies/${currentItem.Id}`)
+    }
   }
 
   const handleMoreInfo = () => {

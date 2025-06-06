@@ -18,9 +18,9 @@ export default function ItemCard({ item }: ItemCardProps) {
 
   const handleOnClick = () => {
     if (item.Type == "Movie") {
-      router.replace(`/movies/${item.Id}`)
+      router.push(`/movies/${item.Id}`)
     } else if (item.Type == "Series") {
-      router.replace(`/series/${item.Id}`)
+      router.push(`/series/${item.Id}`)
     }
   }
 
