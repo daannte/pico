@@ -1,8 +1,9 @@
 import Image from "next/image"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
-import { getYouTubeThumbnail } from "@/lib/carousel-utils"
 import { CarouselItemInfo } from "./carousel-item-info"
 import { CarouselTrailerThumbnail } from "./carousel-trailer"
+import { useJellyfin } from "@/contexts/jellyfin-context"
+import { getItemImageUrl } from "@/lib/jellyfin"
 
 interface CarouselContentProps {
   item: BaseItemDto
@@ -19,9 +20,8 @@ export const CarouselContent = ({
   onMoreInfo,
   onPlayTrailer
 }: CarouselContentProps) => {
-  const trailerThumbnail = item.RemoteTrailers && item.RemoteTrailers.length > 0
-    ? getYouTubeThumbnail(item.RemoteTrailers[0].Url || '')
-    : null
+  const { api } = useJellyfin()
+  const trailerThumbnail = getItemImageUrl({ item, api: api!, variant: "Thumb" })
 
   return (
     <>
@@ -42,9 +42,9 @@ export const CarouselContent = ({
         onPlay={onPlay}
         onMoreInfo={onMoreInfo}
       />
-      {trailerThumbnail && (
+      {(trailerThumbnail || backgroundImage) && (
         <CarouselTrailerThumbnail
-          thumbnailUrl={trailerThumbnail}
+          thumbnailUrl={trailerThumbnail || backgroundImage!}
           onPlay={onPlayTrailer}
         />
       )}
