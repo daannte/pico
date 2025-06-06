@@ -6,7 +6,7 @@ import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
 import { getUserViewsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useEffect, useState } from "react"
 
-export default function Library() {
+export default function Libraries() {
   const { api, user } = useJellyfin()
   const [views, setViews] = useState<BaseItemDto[] | undefined>(undefined)
   const [loading, setLoading] = useState(true)
