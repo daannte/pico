@@ -19,10 +19,8 @@ export default function SectionsCard({ title, items, totalCount, type }: Section
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <SectionsBackground image={image} isEmpty={isEmpty} />
-
       <div className="relative z-10 h-full flex flex-col items-center justify-center p-16">
         <SectionsHeader title={title} count={totalCount} />
-
         <div className="relative w-full h-full overflow-hidden shadow-2xl">
           {isEmpty ? (
             <div className="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center h-full">
