@@ -11,10 +11,10 @@ interface SectionsButtonProps {
 export default function SectionsButton({ disabled = false, text, onClick }: SectionsButtonProps) {
   return (
     <div className="relative group">
-      <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/30 to-white/20 rounded-sm blur-sm group-hover:blur-none transition-all duration-300 opacity-0 group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/30 to-white/20 rounded-sm transition-all duration-300 opacity-0 group-hover:opacity-100" />
       <Button
         size="lg"
-        className="relative w-full py-6 px-8 bg-black/20 backdrop-blur-md hover:bg-white/95 hover:text-black border-2 border-white/80 hover:border-white uppercase text-2xl font-bold text-white tracking-widest transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] rounded-sm"
+        className="relative w-full py-6 px-8 bg-black/20 hover:bg-white/95 hover:text-black border-2 border-white/80 hover:border-white uppercase text-2xl font-bold text-white tracking-widest transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] rounded-sm"
         disabled={disabled}
         onClick={onClick}
       >

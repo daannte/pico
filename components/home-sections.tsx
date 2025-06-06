@@ -7,9 +7,7 @@ import { useLatestAdded } from "@/hooks/use-latest-added"
 export default function HomeSections() {
   const nextUp = useNextUp()
   const latestAdded = useLatestAdded()
-
   const isLoading = nextUp.loading || latestAdded.loading
-
   const hasError = nextUp.error || latestAdded.error
   const errorMessage = nextUp.error || latestAdded.error
 

@@ -54,7 +54,7 @@ export default function SuggestionsCarousel() {
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-[90vh] w-full overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={`bg-${currentIndex}`}
