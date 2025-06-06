@@ -6,7 +6,7 @@ import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
 import { getItemsApi, getTvShowsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useParams } from "next/navigation"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Star } from "lucide-react"
 
 interface SeriesState {
@@ -28,7 +28,7 @@ export default function Series() {
 
   const seriesId = params.seriesId as string
 
-  const fetchSeries = async () => {
+  const fetchSeries = useCallback(async () => {
     if (!api || !user?.Id) return null
     try {
       const itemsApi = getItemsApi(api)
@@ -42,9 +42,9 @@ export default function Series() {
       console.error("Failed to fetch series:", error)
       throw error
     }
-  }
+  }, [api, user?.Id, seriesId])
 
-  const fetchEpisodes = async () => {
+  const fetchEpisodes = useCallback(async () => {
     if (!api || !user?.Id) return []
     try {
       const tvShowsApi = getTvShowsApi(api)
@@ -57,7 +57,7 @@ export default function Series() {
       console.error("Failed to fetch episodes:", error)
       throw error
     }
-  }
+  }, [api, user?.Id, seriesId])
 
   useEffect(() => {
     if (!api || !user) return
@@ -85,7 +85,7 @@ export default function Series() {
     }
 
     loadData()
-  }, [api, user])
+  }, [api, user, fetchSeries, fetchEpisodes])
 
   if (!user) {
     return (

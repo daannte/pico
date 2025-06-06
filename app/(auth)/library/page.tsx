@@ -27,7 +27,7 @@ export default function Library() {
     }
 
     fetchItems()
-  }, [api])
+  }, [api, user])
 
   if (!user) return null
 

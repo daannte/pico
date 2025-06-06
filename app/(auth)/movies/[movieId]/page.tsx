@@ -6,7 +6,7 @@ import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
 import { getItemsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useParams } from "next/navigation"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Star } from "lucide-react"
 
 interface MovieState {
@@ -26,7 +26,7 @@ export default function Movies() {
 
   const movieId = params.movieId as string
 
-  const fetchMovie = async () => {
+  const fetchMovie = useCallback(async () => {
     if (!api || !user?.Id) return null
 
     try {
@@ -41,7 +41,7 @@ export default function Movies() {
       console.error("Failed to fetch movie:", error)
       throw error
     }
-  }
+  }, [api, user, movieId])
 
   useEffect(() => {
     if (!api || !user) return
@@ -67,7 +67,7 @@ export default function Movies() {
     }
 
     loadData()
-  }, [api, user])
+  }, [api, user, fetchMovie])
 
   if (!user) {
     return (

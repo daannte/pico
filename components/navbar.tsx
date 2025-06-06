@@ -9,7 +9,7 @@ export default function Navbar() {
   const { logout } = useJellyfin()
 
   return (
-    <header className="w-full px-4 py-2 flex items-center justify-between bg-gradient-to-b from-black/40 to-transparent">
+    <header className="w-full px-8 py-2 flex items-center justify-between bg-gradient-to-b from-black/40 to-transparent">
       <div className="text-white text-2xl font-semibold">
         <Link href="/">Pico</Link>
       </div>

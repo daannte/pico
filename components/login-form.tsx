@@ -12,23 +12,23 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const jellyfin = useJellyfin()
+  const { setFormData, formData, login } = useJellyfin()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    jellyfin.setFormData({
+    setFormData({
       serverUrl: "",
       username: "",
       password: "",
     });
-  }, []);
+  }, [setFormData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-    jellyfin.setFormData({
-      ...jellyfin.formData,
+    setFormData({
+      ...formData,
       [name]: value.replace(/\s+/g, ""),
     })
 
@@ -40,9 +40,10 @@ export function LoginForm({
     setError('')
 
     try {
-      await jellyfin.login()
-    } catch (err: any) {
-      setError(err.message || 'Authentication failed')
+      await login()
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Authentication failed'
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -71,7 +72,7 @@ export function LoginForm({
                 </Label>
                 <PrefixInput
                   name="serverUrl"
-                  value={jellyfin.formData.serverUrl}
+                  value={formData.serverUrl}
                   onChange={handleInputChange}
                   placeholder="your-jellyfin-server.com"
                 />
@@ -84,7 +85,7 @@ export function LoginForm({
                   id="username"
                   name="username"
                   type="text"
-                  value={jellyfin.formData.username}
+                  value={formData.username}
                   onChange={handleInputChange}
                   placeholder="Enter your username"
                   className="w-full"
@@ -96,7 +97,7 @@ export function LoginForm({
                 </Label>
                 <PasswordInput
                   name="password"
-                  value={jellyfin.formData.password}
+                  value={formData.password}
                   onChange={handleInputChange}
                 />
               </div>

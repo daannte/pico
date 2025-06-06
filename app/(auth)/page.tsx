@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { getUserViewsApi, getItemsApi, getTvShowsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
@@ -21,7 +21,7 @@ export default function Home() {
     error: null
   })
 
-  const fetchAllItems = async () => {
+  const fetchAllItems = useCallback(async () => {
     if (!api || !user?.Id) return []
 
     try {
@@ -54,9 +54,9 @@ export default function Home() {
       console.error("Failed to fetch library items:", error)
       throw error
     }
-  }
+  }, [api, user])
 
-  const fetchNextUpItems = async () => {
+  const fetchNextUpItems = useCallback(async () => {
     if (!api || !user?.Id) return []
 
     try {
@@ -70,7 +70,7 @@ export default function Home() {
       console.error("Failed to fetch next up items:", error)
       throw error
     }
-  }
+  }, [api, user])
 
   useEffect(() => {
     if (!api || !user) return
@@ -100,7 +100,7 @@ export default function Home() {
     }
 
     loadData()
-  }, [api, user])
+  }, [api, user, fetchNextUpItems, fetchAllItems])
 
   if (!user) {
     return (

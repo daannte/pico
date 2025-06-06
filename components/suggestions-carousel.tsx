@@ -54,7 +54,11 @@ export default function SuggestionsCarousel() {
         <motion.div
           key={`bg-${currentIndex}`}
           className="absolute inset-0 bg-cover bg-center blur-sm z-0"
-          style={{ backgroundImage: `url(${backgroundImage})` }}
+          style={{
+            backgroundImage: backgroundImage
+              ? `url(${backgroundImage})`
+              : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)'
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
