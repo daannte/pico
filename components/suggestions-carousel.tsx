@@ -58,7 +58,7 @@ export default function SuggestionsCarousel() {
       <AnimatePresence mode="wait">
         <motion.div
           key={`bg-${currentIndex}`}
-          className="absolute inset-0 bg-cover bg-center blur-sm z-0"
+          className="absolute inset-0 bg-cover bg-center blur-xs scale-102 z-0"
           style={{
             backgroundImage: backgroundImage
               ? `url(${backgroundImage})`

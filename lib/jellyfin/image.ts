@@ -42,14 +42,26 @@ export const getItemImageUrl = ({
       }
 
     case "Primary":
-      const primaryTag = item.ImageTags?.Primary;
-      if (!primaryTag) return null;
-      return `${basePath}/Items/${item.Id}/Images/Primary?quality=${quality}&tag=${primaryTag}&width=${width}`;
+      if (item.Type === "Episode") {
+        const tag = item.SeriesPrimaryImageTag;
+        if (!tag || !item.SeriesId) return null;
+        return `${basePath}/Items/${item.SeriesId}/Images/Primary?quality=${quality}&tag=${tag}&width=${width}`;
+      } else {
+        const primaryTag = item.ImageTags?.Primary;
+        if (!primaryTag) return null;
+        return `${basePath}/Items/${item.Id}/Images/Primary?quality=${quality}&tag=${primaryTag}&width=${width}`;
+      }
 
     case "Thumb":
-      const thumbTag = item.ImageTags?.Thumb;
-      if (!thumbTag) return null;
-      return `${basePath}/Items/${item.Id}/Images/Thumb?quality=${quality}&tag=${thumbTag}&width=${width}`;
+      if (item.Type === "Episode") {
+        const tag = item.ParentThumbImageTag;
+        if (!tag || !item.ParentThumbItemId) return null;
+        return `${basePath}/Items/${item.ParentThumbItemId}/Images/Thumb?quality=${quality}&tag=${tag}&width=${width}`;
+      } else {
+        const thumbTag = item.ImageTags?.Thumb;
+        if (!thumbTag) return null;
+        return `${basePath}/Items/${item.Id}/Images/Thumb?quality=${quality}&tag=${thumbTag}&width=${width}`;
+      }
 
     default:
       const fallbackTag = item.ImageTags?.Primary;
