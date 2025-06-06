@@ -1,0 +1,5 @@
+export { CarouselDots } from './carousel-dots'
+export { CarouselContent } from './carousel-content'
+export { CarouselActionButtons } from './carousel-buttons'
+export { CarouselTrailerThumbnail } from './carousel-trailer'
+export { CarouselItemInfo } from './carousel-item-info'
