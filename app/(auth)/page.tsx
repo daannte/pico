@@ -3,8 +3,6 @@ import { useEffect, useState } from "react"
 import { getUserViewsApi, getItemsApi, getTvShowsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
-import { getItemImageUrl } from "@/lib/jellyfin"
-import Image from "next/image"
 import SuggestionsCarousel from "@/components/suggestions-carousel"
 
 interface HomeState {
