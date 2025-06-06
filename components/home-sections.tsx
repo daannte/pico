@@ -1,122 +1,28 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useJellyfin } from "@/contexts/jellyfin-context"
-import { getItemsApi, getTvShowsApi } from "@jellyfin/sdk/lib/utils/api"
-import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
 import SectionsCard from "./ui/home-sections/sections-card"
-
-interface HomeSectionsState {
-  nextUp: BaseItemDto[]
-  myLibrary: BaseItemDto[]
-  latestAdded: BaseItemDto[]
-  loading: boolean
-  error: string | null
-}
+import { useNextUp } from "@/hooks/use-nextup"
+import { useLatestAdded } from "@/hooks/use-latest-added"
 
 export default function HomeSections() {
-  const { api, user } = useJellyfin()
-  const [state, setState] = useState<HomeSectionsState>({
-    nextUp: [],
-    myLibrary: [],
-    latestAdded: [],
-    loading: true,
-    error: null
-  })
+  const nextUp = useNextUp()
+  const latestAdded = useLatestAdded()
 
-  useEffect(() => {
-    if (!api || !user) return
+  const isLoading = nextUp.loading || latestAdded.loading
 
-    const fetchNextUp = async () => {
-      try {
-        const tvShowsApi = getTvShowsApi(api)
-        const response = await tvShowsApi.getNextUp({
-          userId: user.Id!,
-          limit: 6,
-          disableFirstEpisode: true
-        })
-        return response.data.Items || []
-      } catch (error) {
-        console.error("Failed to fetch next up:", error)
-        return []
-      }
-    }
+  const hasError = nextUp.error || latestAdded.error
+  const errorMessage = nextUp.error || latestAdded.error
 
-    const fetchMyLibrary = async () => {
-      try {
-        const itemsApi = getItemsApi(api)
-        const response = await itemsApi.getItems({
-          userId: user.Id!,
-          limit: 6,
-          recursive: true,
-          includeItemTypes: ["Series", "Movie"],
-          sortBy: ["Random"],
-          fields: ["PrimaryImageAspectRatio"]
-        })
-        return response.data.Items || []
-      } catch (error) {
-        console.error("Failed to fetch library items:", error)
-        return []
-      }
-    }
-
-    const fetchLatestAdded = async () => {
-      try {
-        const itemsApi = getItemsApi(api)
-        const response = await itemsApi.getItems({
-          userId: user.Id!,
-          limit: 6,
-          recursive: true,
-          includeItemTypes: ["Series", "Movie"],
-          sortBy: ["DateCreated"],
-          sortOrder: ["Descending"],
-          fields: ["PrimaryImageAspectRatio", "DateCreated"]
-        })
-        return response.data.Items || []
-      } catch (error) {
-        console.error("Failed to fetch latest added:", error)
-        return []
-      }
-    }
-
-    const loadData = async () => {
-      setState(prev => ({ ...prev, loading: true, error: null }))
-      try {
-        const [nextUp, myLibrary, latestAdded] = await Promise.all([
-          fetchNextUp(),
-          fetchMyLibrary(),
-          fetchLatestAdded()
-        ])
-        setState({
-          nextUp,
-          myLibrary,
-          latestAdded,
-          loading: false,
-          error: null
-        })
-      } catch (error) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: error instanceof Error ? error.message : 'An error occurred'
-        }))
-      }
-    }
-
-    loadData()
-  }, [api, user])
-
-  if (state.loading) {
+  if (isLoading) {
     return (
-      <div className="w-full px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3">
           {[1, 2, 3].map(i => (
-            <div key={i} className="space-y-4">
-              <div className="h-6 bg-gray-300 rounded animate-pulse"></div>
-              <div className="space-y-2">
-                {[1, 2, 3].map(j => (
-                  <div key={j} className="h-20 bg-gray-200 rounded animate-pulse"></div>
-                ))}
+            <div key={i} className="relative h-screen w-full overflow-hidden bg-gray-900">
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-16">
+                <div className="w-full h-8 bg-gray-700 rounded animate-pulse mb-8"></div>
+                <div className="w-full h-full bg-gray-800 rounded animate-pulse shadow-2xl"></div>
+                <div className="w-full h-16 bg-gray-700 rounded animate-pulse mt-8"></div>
               </div>
             </div>
           ))}
@@ -125,11 +31,18 @@ export default function HomeSections() {
     )
   }
 
-  if (state.error) {
+  if (hasError) {
     return (
-      <div className="w-full px-4 py-8">
-        <div className="text-center text-red-500">
-          <p>Error loading content: {state.error}</p>
+      <div className="w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3">
+          <div className="relative h-screen w-full overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-900/20 to-black" />
+            <div className="relative z-10 h-full flex flex-col items-center justify-center p-16">
+              <div className="text-red-400 text-2xl text-center">
+                Error loading content: {errorMessage}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -137,10 +50,25 @@ export default function HomeSections() {
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-3">
-        <SectionsCard title="Continue Watching" />
-        <SectionsCard title="Library" />
-        <SectionsCard title="Recently Added" />
+      <div className="grid grid-cols-1 lg:grid-cols-3">
+        <SectionsCard
+          title="Continue Watching"
+          items={nextUp.item ? [nextUp.item] : []}
+          totalCount={nextUp.totalCount}
+          type="nextup"
+        />
+        <SectionsCard
+          title="Recently Added"
+          items={latestAdded.items}
+          totalCount={latestAdded.totalCount}
+          type="latest"
+        />
+        <SectionsCard
+          title="Favourites"
+          items={[]}
+          totalCount={0}
+          type="favourites"
+        />
       </div>
     </div>
   )

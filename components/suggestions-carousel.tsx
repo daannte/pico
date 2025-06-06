@@ -71,7 +71,7 @@ export default function SuggestionsCarousel() {
         />
       </AnimatePresence>
 
-      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0 bg-black/20" />
 
       <div
         className="relative z-10 h-full flex items-center justify-center p-16"
