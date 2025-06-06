@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react"
 import { getUserViewsApi, getItemsApi, getTvShowsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useJellyfin } from "@/contexts/jellyfin-context"
-import CarouselSlides from "@/components/carousel"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
+import { getItemImageUrl } from "@/lib/jellyfin"
+import Image from "next/image"
+import SuggestionsCarousel from "@/components/suggestions-carousel"
 
 interface HomeState {
   allItems: BaseItemDto[]
@@ -81,7 +83,7 @@ export default function Home() {
       try {
         const [allItems, nextUpItems] = await Promise.all([
           fetchAllItems(),
-          fetchNextUpItems()
+          fetchNextUpItems(),
         ])
 
         setState({
@@ -146,21 +148,10 @@ export default function Home() {
     )
   }
 
-  return (
-    <div className="w-full p-4 md:p-8 lg:p-16 space-y-8">
-      {state.nextUpItems.length > 0 && (
-        <section>
-          <h2 className="text-2xl font-bold mb-4">Continue Watching</h2>
-          <CarouselSlides items={state.nextUpItems} episodes />
-        </section>
-      )}
 
-      {state.allItems.length > 0 && (
-        <section>
-          <h2 className="text-2xl font-bold mb-4">Your Library</h2>
-          <CarouselSlides items={state.allItems} />
-        </section>
-      )}
+  return (
+    <div className="w-full space-y-8">
+      <SuggestionsCarousel />
     </div>
   )
 }

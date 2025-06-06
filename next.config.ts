@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "demo.jellyfin.org",
         pathname: "/stable/Items/**"
       },
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        pathname: "/vi/**"
+      },
     ],
   },
 };
