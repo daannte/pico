@@ -1,23 +1,46 @@
 "use client";
 
+import { motion, AnimatePresence } from "motion/react";
 import ItemCard from "./item-card";
 import { useMedia } from "@/contexts/media-context";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
+export const slideVariants = {
+  enter: { x: "100%", opacity: 0 },
+  center: { x: 0, opacity: 1 },
+  exit: { x: "-100%", opacity: 0 },
+};
+
+export const slideTransition = {
+  duration: 0.5,
+  ease: "easeInOut" as const,
+};
+
 export default function MediaList() {
+  // TODO: Add favourites hook
   const {
     nextUp,
     latestAdded,
-    // favouritesItems,
     currentSection,
     setCurrentSection,
   } = useMedia();
 
+  const renderSectionItems = () => {
+    if (currentSection === "watching") {
+      return nextUp.items.map((item, i) => <ItemCard key={i} item={item} />);
+    }
+
+    if (currentSection === "recentlyAdded") {
+      return latestAdded.items.map((item, i) => <ItemCard key={i} item={item} />);
+    }
+
+    return [];
+  };
+
   return (
     <div className="bg-black min-h-screen w-full text-white">
       <div className="px-4 py-12 sm:px-8 lg:p-16 space-y-12">
-
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
           <Button
             variant="ghost"
@@ -49,33 +72,23 @@ export default function MediaList() {
               currentSection !== "favourites" && "text-muted-foreground"
             )}
           >
-            Favourites ({0})
+            Favourites (0)
           </Button>
         </div>
 
-        {currentSection === "watching" && (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {nextUp.items.map((item, i) => (
-              <ItemCard key={i} item={item} />
-            ))}
-          </div>
-        )}
-
-        {currentSection === "recentlyAdded" && (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {latestAdded.items.map((item, i) => (
-              <ItemCard key={i} item={item} />
-            ))}
-          </div>
-        )}
-
-        {/* {currentSection === "favourites" && ( */}
-        {/*   <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"> */}
-        {/*     {favouritesItems.map((item, i) => ( */}
-        {/*       <ItemCard key={i} item={item} /> */}
-        {/*     ))} */}
-        {/*   </div> */}
-        {/* )} */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={currentSection}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={slideTransition}
+            className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {renderSectionItems()}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
