@@ -1,3 +1,5 @@
+"use client"
+
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import type { TvShowsApiGetNextUpRequest } from "@jellyfin/sdk/lib/generated-client/api/tv-shows-api"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
@@ -5,6 +7,7 @@ import { getTvShowsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useEffect, useState } from "react"
 
 interface UseNextUpState {
+  items: BaseItemDto[]
   item: BaseItemDto | null
   totalCount: number
   loading: boolean
@@ -14,6 +17,7 @@ interface UseNextUpState {
 export function useNextUp(options: TvShowsApiGetNextUpRequest = {}) {
   const { api, user } = useJellyfin()
   const [state, setState] = useState<UseNextUpState>({
+    items: [],
     item: null,
     totalCount: 0,
     loading: true,
@@ -26,9 +30,26 @@ export function useNextUp(options: TvShowsApiGetNextUpRequest = {}) {
     enableTotalRecordCount = true
   } = options
 
+  const fetchNextUp = async () => {
+    const tvShowsApi = getTvShowsApi(api!)
+    const response = await tvShowsApi.getNextUp({
+      userId: user!.Id!,
+      limit,
+      disableFirstEpisode,
+      enableTotalRecordCount
+    })
+
+    const items = response.data.Items || []
+    const totalCount = response.data.TotalRecordCount || 0
+    const item = items.length > 0 ? items[Math.floor(Math.random() * items.length)] : null
+
+    return { items, item, totalCount }
+  }
+
   useEffect(() => {
     if (!api || !user) {
       setState({
+        items: [],
         item: null,
         totalCount: 0,
         loading: false,
@@ -37,36 +58,12 @@ export function useNextUp(options: TvShowsApiGetNextUpRequest = {}) {
       return
     }
 
-    const fetchNextUp = async () => {
-      try {
-        const tvShowsApi = getTvShowsApi(api)
-        const response = await tvShowsApi.getNextUp({
-          userId: user.Id!,
-          limit,
-          disableFirstEpisode,
-          enableTotalRecordCount
-        })
-
-        const items = response.data.Items || []
-        const totalCount = response.data.TotalRecordCount || 0
-        const item = items.length > 0 ? items[Math.floor(Math.random() * items.length)] : null
-
-        return {
-          item,
-          totalCount
-        }
-      } catch (error) {
-        console.error("Failed to fetch next up:", error)
-        throw error
-      }
-    }
-
     const loadData = async () => {
       setState(prev => ({ ...prev, loading: true, error: null }))
-
       try {
-        const { item, totalCount } = await fetchNextUp()
+        const { items, item, totalCount } = await fetchNextUp()
         setState({
+          items,
           item,
           totalCount,
           loading: false,
@@ -88,21 +85,10 @@ export function useNextUp(options: TvShowsApiGetNextUpRequest = {}) {
     if (!api || !user) return
 
     setState(prev => ({ ...prev, loading: true, error: null }))
-
     try {
-      const tvShowsApi = getTvShowsApi(api)
-      const response = await tvShowsApi.getNextUp({
-        userId: user.Id!,
-        limit,
-        disableFirstEpisode,
-        enableTotalRecordCount
-      })
-
-      const items = response.data.Items || []
-      const totalCount = response.data.TotalRecordCount || 0
-      const item = items.length > 0 ? items[Math.floor(Math.random() * items.length)] : null
-
+      const { items, item, totalCount } = await fetchNextUp()
       setState({
+        items,
         item,
         totalCount,
         loading: false,

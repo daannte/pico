@@ -17,10 +17,12 @@ export default function ItemCard({ item }: ItemCardProps) {
   const imageUrl = getItemImageUrl({ item, api: api! })
 
   const handleOnClick = () => {
-    if (item.Type == "Movie") {
+    if (item.Type === "Movie") {
       router.push(`/movies/${item.Id}`)
-    } else if (item.Type == "Series") {
+    } else if (item.Type === "Series") {
       router.push(`/series/${item.Id}`)
+    } else if (item.Type === "Episode") {
+      router.push(`/series/${item.SeriesId}`)
     }
   }
 

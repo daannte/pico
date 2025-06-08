@@ -7,9 +7,18 @@ import type { SectionsCardProps } from "@/types/sections"
 import SectionsHeader from "./sections-header"
 import SectionsBackground from "./sections-background"
 import SectionsButton from "./sections-button"
+import { useRouter } from "next/navigation"
+import { useMedia } from "@/contexts/media-context"
 
-export default function SectionsCard({ title, items, totalCount, type }: SectionsCardProps) {
+export default function SectionsCard({
+  title,
+  items,
+  totalCount,
+  type
+}: SectionsCardProps) {
   const { api } = useJellyfin()
+  const { setCurrentSection } = useMedia()
+  const router = useRouter()
   const displayItem = getDisplayItem(items, type)
   const image = displayItem ? getItemImageUrl({ item: displayItem, api: api! }) : null
   const isEmpty = !displayItem || totalCount === 0
@@ -43,6 +52,13 @@ export default function SectionsCard({ title, items, totalCount, type }: Section
         ease: "easeOut",
         delay: 0.2
       }
+    }
+  }
+
+  const handleClick = () => {
+    if (totalCount > 0) {
+      setCurrentSection(type)
+      router.push("/media")
     }
   }
 
@@ -81,6 +97,7 @@ export default function SectionsCard({ title, items, totalCount, type }: Section
           <SectionsButton
             disabled={totalCount === 0}
             text={totalCount === 0 ? "Nothing to show" : "See All"}
+            onClick={handleClick}
           />
         </motion.div>
       </div>

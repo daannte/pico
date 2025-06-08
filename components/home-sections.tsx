@@ -1,12 +1,10 @@
 "use client"
 
 import SectionsCard from "./ui/home-sections/sections-card"
-import { useNextUp } from "@/hooks/use-nextup"
-import { useLatestAdded } from "@/hooks/use-latest-added"
+import { useMedia } from "@/contexts/media-context"
 
 export default function HomeSections() {
-  const nextUp = useNextUp()
-  const latestAdded = useLatestAdded()
+  const { nextUp, latestAdded } = useMedia()
   const isLoading = nextUp.loading || latestAdded.loading
   const hasError = nextUp.error || latestAdded.error
   const errorMessage = nextUp.error || latestAdded.error
@@ -53,13 +51,13 @@ export default function HomeSections() {
           title="Continue Watching"
           items={nextUp.item ? [nextUp.item] : []}
           totalCount={nextUp.totalCount}
-          type="nextup"
+          type="watching"
         />
         <SectionsCard
           title="Recently Added"
           items={latestAdded.items}
           totalCount={latestAdded.totalCount}
-          type="latest"
+          type="recentlyAdded"
         />
         <SectionsCard
           title="Favourites"

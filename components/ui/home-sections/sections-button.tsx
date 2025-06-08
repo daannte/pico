@@ -8,7 +8,11 @@ interface SectionsButtonProps {
   onClick?: () => void
 }
 
-export default function SectionsButton({ disabled = false, text, onClick }: SectionsButtonProps) {
+export default function SectionsButton({
+  disabled = false,
+  text,
+  onClick
+}: SectionsButtonProps) {
   return (
     <div className="relative group">
       <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/30 to-white/20 rounded-sm transition-all duration-300 opacity-0 group-hover:opacity-100" />
