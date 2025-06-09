@@ -5,9 +5,10 @@ import { getItemImageUrl } from "@/lib/jellyfin"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
 import { getItemsApi } from "@jellyfin/sdk/lib/utils/api"
 import { useParams } from "next/navigation"
-import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
-import { Star } from "lucide-react"
+import Background from "@/components/background"
+import { AnimatePresence } from "motion/react"
+import Content from "@/components/content"
 
 interface MovieState {
   movie: BaseItemDto | null
@@ -115,74 +116,41 @@ export default function Movies() {
 
   const backdropUrl = state.movie ? getItemImageUrl({ item: state.movie, api: api!, variant: "Backdrop" }) : null
 
+  const handlePlay = () => {
+  }
+
+  const handleMoreInfo = () => {
+  }
+
+  const handlePlayTrailer = () => {
+  }
+
   return (
-    <div className="w-full">
-      {state.movie && backdropUrl && (
-        <div className="relative w-full h-screen min-h-[500px] overflow-hidden">
-          <div className="absolute inset-0">
-            <Image
-              src={backdropUrl}
-              alt={state.movie.Name || "Movie backdrop"}
-              fill
-              priority
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          </div>
+    <div className="relative h-screen w-full overflow-hidden">
+      <Background imageUrl={backdropUrl} />
 
-          <div className="relative z-10 h-full flex items-center">
-            <div className="absolute left-8">
-              <div className="max-w-2xl space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-8xl font-bold text-white drop-shadow-lg">
-                  {state.movie.Name}
-                </h1>
+      <div className="absolute inset-0 bg-black/20" />
 
-                <div className="flex flex-wrap items-center gap-4 text-white/90">
-                  {state.movie.ProductionYear && (
-                    <span className="text-lg font-medium">{state.movie.ProductionYear}</span>
-                  )}
-                  {state.movie.OfficialRating && (
-                    <span className="px-2 py-1 border border-white/50 text-sm font-medium rounded">
-                      {state.movie.OfficialRating}
-                    </span>
-                  )}
-                  {state.movie.RunTimeTicks && (
-                    <span className="text-md">
-                      {Math.round((state.movie.RunTimeTicks / 10000000) / 60)} min
-                    </span>
-                  )}
-                  {state.movie.CommunityRating && (
-                    <div className="text-md font-medium flex items-center gap-1">
-                      <Star className="fill-yellow-400" size={20} />
-                      <span>{state.movie.CommunityRating.toFixed(1)}</span>
-                    </div>
-                  )}
-                </div>
-
-                {state.movie.Genres && state.movie.Genres.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {state.movie.Genres.slice(0, 3).map((genre, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm rounded-full"
-                      >
-                        {genre}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* {state.Movie.Overview && ( */}
-                {/*   <p className="text-white/90 text-lg leading-relaxed max-w-xl"> */}
-                {/*     {state.Movie.Overview} */}
-                {/*   </p> */}
-                {/* )} */}
+      <div
+        className="relative z-10 h-full flex items-center justify-center p-16"
+      >
+        <div className="relative w-full max-w-8xl h-full rounded-lg overflow-hidden shadow-2xl">
+          {state.movie && (
+            <AnimatePresence mode="wait">
+              <div className="absolute inset-0">
+                <Content
+                  item={state.movie}
+                  backgroundUrl={backdropUrl}
+                  onPlay={handlePlay}
+                  onMoreInfo={handleMoreInfo}
+                  onPlayTrailer={handlePlayTrailer}
+                  showMetadata={true}
+                />
               </div>
-            </div>
-          </div>
+            </AnimatePresence>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }
