@@ -16,7 +16,10 @@ export function useLibraryViews() {
       try {
         const userApi = getUserViewsApi(api)
         const res = await userApi.getUserViews({ userId: user.Id })
-        setViews(res.data.Items)
+        setViews(res.data.Items
+          ?.filter((l) => l.CollectionType !== "music")
+          .filter((l) => l.CollectionType !== "books") || []
+        )
       } catch (err) {
         console.error("Failed to fetch views", err)
         setError(err)
