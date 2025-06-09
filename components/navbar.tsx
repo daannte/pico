@@ -20,12 +20,12 @@ export default function Navbar() {
         >
           Home
         </Link>
-        {/* <Link */}
-        {/*   href="/library" */}
-        {/*   className={pathname === "/library" ? "text-white" : "text-white/60 hover:text-white/90 transition-colors"} */}
-        {/* > */}
-        {/*   Library */}
-        {/* </Link> */}
+        <Link
+          href="/library"
+          className={pathname === "/library" ? "text-white" : "text-white/60 hover:text-white/90 transition-colors"}
+        >
+          Library
+        </Link>
       </nav>
       <div>
         <Button

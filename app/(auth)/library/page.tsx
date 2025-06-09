@@ -1,45 +1,22 @@
 "use client"
 
-import ItemCard from "@/components/item-card"
-import { useJellyfin } from "@/contexts/jellyfin-context"
-import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
-import { getUserViewsApi } from "@jellyfin/sdk/lib/utils/api"
-import { useEffect, useState } from "react"
+import LibraryCard from "@/components/library-card"
+import { useMedia } from "@/contexts/media-context"
 
 export default function Libraries() {
-  const { api, user } = useJellyfin()
-  const [views, setViews] = useState<BaseItemDto[] | undefined>(undefined)
-  const [loading, setLoading] = useState(true)
+  const { libraries } = useMedia()
 
-  useEffect(() => {
-    if (!api) return
+  if (libraries.loading) return <div>Spinner</div>
 
-    const fetchItems = async () => {
-      try {
-        const apiUser = getUserViewsApi(api!)
-        const _views = await apiUser.getUserViews({ userId: user?.Id })
-        setViews(_views.data.Items)
-      } catch (error) {
-        console.error("Failed to fetch Jellyfin items:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchItems()
-  }, [api, user])
-
-  if (!user) return null
-
-  if (loading) return <div>Spinner</div>
-
-  if (!views) return <div>No views</div>
+  if (!libraries.views) return <div>No views</div>
 
   return (
-    <div>
-      {views.map((view) => (
-        <ItemCard key={view.Id} item={view} />
-      ))}
+    <div className="h-screen bg-black">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-16">
+        {libraries.views.map((view) => (
+          <LibraryCard key={view.Id} item={view} />
+        ))}
+      </div>
     </div>
   )
 }

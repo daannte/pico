@@ -1,3 +1,5 @@
+"use client"
+
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import type { ItemsApiGetItemsRequest } from "@jellyfin/sdk/lib/generated-client/api/items-api"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"

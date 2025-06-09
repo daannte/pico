@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useRef } from "react"
 import { AUTO_CYCLE_DELAY } from "@/lib/carousel-utils"
 

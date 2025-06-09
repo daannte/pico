@@ -1,6 +1,7 @@
 "use client"
 
-import { motion, AnimatePresence } from "motion/react"
+import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
 
 type AnimatedBackgroundProps = {
   imageUrl: string | null
@@ -12,17 +13,24 @@ export default function AnimatedBackground({ imageUrl, index }: AnimatedBackgrou
     <AnimatePresence mode="wait">
       <motion.div
         key={`bg-${index}`}
-        className="absolute inset-0 bg-cover bg-center blur-xs scale-102 z-0"
-        style={{
-          backgroundImage: imageUrl
-            ? `url(${imageUrl})`
-            : "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)"
-        }}
+        className="absolute inset-0 z-0 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-      />
+      >
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt="Background"
+            fill
+            priority
+            className="object-cover blur-xs scale-102"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900" />
+        )}
+      </motion.div>
     </AnimatePresence>
   )
 }

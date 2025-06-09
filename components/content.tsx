@@ -26,8 +26,6 @@ export default function Content({
   const { api } = useJellyfin()
   const trailerThumbnail = getItemImageUrl({ item, api: api!, variant: "Thumb" })
 
-  console.log(item)
-
   return (
     <div className="relative w-full h-full overflow-hidden">
       {backgroundUrl ? (

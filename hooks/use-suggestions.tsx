@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import { getSuggestionsApi } from "@jellyfin/sdk/lib/utils/api"
