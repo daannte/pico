@@ -1,10 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import ItemCard from "./item-card";
 import { useMedia } from "@/contexts/media-context";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import MediaCard from "./media-card";
 
 export const slideVariants = {
   enter: { x: "100%", opacity: 0 },
@@ -28,11 +28,11 @@ export default function MediaList() {
 
   const renderSectionItems = () => {
     if (currentSection === "watching") {
-      return nextUp.items.map((item, i) => <ItemCard key={i} item={item} />);
+      return nextUp.items.map((item, i) => <MediaCard key={i} item={item} variant="episode" />);
     }
 
     if (currentSection === "recentlyAdded") {
-      return latestAdded.items.map((item, i) => <ItemCard key={i} item={item} />);
+      return latestAdded.items.map((item, i) => <MediaCard key={i} item={item} />);
     }
 
     return [];

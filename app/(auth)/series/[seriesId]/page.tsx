@@ -1,6 +1,5 @@
 "use client"
 
-import CarouselSlides from "@/components/carousel"
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import { getItemImageUrl } from "@/lib/jellyfin"
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models"
@@ -11,6 +10,7 @@ import Background from "@/components/background"
 import { AnimatePresence } from "motion/react"
 import Content from "@/components/content"
 import Header from "@/components/header"
+import EpisodeCarousel from "@/components/episode-carousel"
 
 interface SeriesState {
   episodes: BaseItemDto[]
@@ -180,7 +180,7 @@ export default function Series() {
         <div className="w-full px-8">
           {state.episodes.length > 0 && (
             <section>
-              <CarouselSlides items={state.episodes} episodes />
+              <EpisodeCarousel items={state.episodes} />
             </section>
           )}
         </div>

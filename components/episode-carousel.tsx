@@ -7,15 +7,13 @@ import {
 } from "@/components/ui/carousel";
 import { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models";
 import React from "react";
-import ItemCard from "./item-card";
-import EpisodeCard from "./episode-card";
+import MediaCard from "./media-card";
 
-interface CarouselSlidesProps {
+interface EpisodeCarouselProps {
   items: BaseItemDto[]
-  episodes?: boolean
 }
 
-export default function CarouselSlides({ items, episodes }: CarouselSlidesProps) {
+export default function EpisodeCarousel({ items }: EpisodeCarouselProps) {
   return (
     <Carousel
       opts={{
@@ -27,12 +25,9 @@ export default function CarouselSlides({ items, episodes }: CarouselSlidesProps)
         {items.map((item) => (
           <CarouselItem
             key={item.Id}
-            className={episodes ? "md:basis-1/2 lg:basis-1/3 xl:basis-1/4" : "md:basis-1/4 lg:basis-1/5 xl:basis-1/6"}
+            className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
           >
-            {episodes ?
-              <EpisodeCard item={item} /> :
-              <ItemCard item={item} />
-            }
+            <MediaCard item={item} variant="episode" />
           </CarouselItem>
         ))}
       </CarouselContent>
