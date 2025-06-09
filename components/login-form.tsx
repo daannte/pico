@@ -118,9 +118,13 @@ export function LoginForm({
               Or
             </span>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">
+          <div className="text-center text-xs text-muted-foreground space-y-2">
+            <p>
               Demo server: demo.jellyfin.org/stable with username "demo"
+            </p>
+            <p>
+              Disclaimer: The app requires a publicly accessible Jellyfin server. It will fail to fetch data if your instance isn't exposed to the internet.
+              For private use, consider self-hosting the app and connecting it to your local server.
             </p>
           </div>
         </div>
