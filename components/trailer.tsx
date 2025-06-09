@@ -1,13 +1,13 @@
 import Image from "next/image"
 import { motion } from "motion/react"
 
-interface CarouselTrailerThumbnailProps {
+interface TrailerProps {
   thumbnailUrl: string
   onPlay: () => void
 }
 
-export const CarouselTrailerThumbnail = ({ thumbnailUrl, onPlay }: CarouselTrailerThumbnailProps) => (
-  <div className="absolute bottom-0 left-0 p-8">
+export default function Trailer({ thumbnailUrl, onPlay }: TrailerProps) {
+  return (
     <motion.div
       className="relative"
       initial={{ opacity: 0, scale: 0.8 }}
@@ -16,19 +16,19 @@ export const CarouselTrailerThumbnail = ({ thumbnailUrl, onPlay }: CarouselTrail
     >
       <div
         onClick={onPlay}
-        className="relative w-96 h-48 rounded overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+        className="relative w-32 h-20 sm:w-48 sm:h-28 lg:w-64 lg:h-36 rounded overflow-hidden cursor-pointer hover:scale-105 transition-transform shadow-lg"
       >
         <Image
           src={thumbnailUrl}
           alt="Trailer thumbnail"
           fill
-          sizes="w-96 h-48"
+          sizes="(max-width: 640px) 128px, (max-width: 1024px) 192px, 256px"
           className="object-cover"
         />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-black/50 rounded-full p-4 hover:bg-black/70 transition-colors">
+          <div className="bg-black/50 rounded-full p-2 sm:p-3 lg:p-4 hover:bg-black/70 transition-colors">
             <svg
-              className="w-8 h-8 text-white ml-1"
+              className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white ml-0.5"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -38,5 +38,5 @@ export const CarouselTrailerThumbnail = ({ thumbnailUrl, onPlay }: CarouselTrail
         </div>
       </div>
     </motion.div>
-  </div>
-)
+  )
+}

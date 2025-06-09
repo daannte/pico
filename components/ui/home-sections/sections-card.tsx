@@ -4,7 +4,7 @@ import { getItemImageUrl } from "@/lib/jellyfin"
 import { useJellyfin } from "@/contexts/jellyfin-context"
 import { getDisplayItem, getSectionEmptyMessage } from "@/types/sections"
 import type { SectionsCardProps } from "@/types/sections"
-import SectionsHeader from "./sections-header"
+import Header from "@/components/header"
 import SectionsBackground from "./sections-background"
 import SectionsButton from "./sections-button"
 import { useRouter } from "next/navigation"
@@ -66,7 +66,7 @@ export default function SectionsCard({
     <section className="relative h-screen w-full overflow-hidden">
       <SectionsBackground image={image} isEmpty={isEmpty} />
       <div className="relative z-10 h-full flex flex-col items-center justify-center p-16">
-        <SectionsHeader title={title} count={totalCount} />
+        <Header title={title} count={totalCount} />
 
         <motion.div
           className="relative w-full h-full overflow-hidden shadow-2xl"

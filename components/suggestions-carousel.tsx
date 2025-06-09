@@ -8,8 +8,10 @@ import { getItemImageUrl } from "@/lib/jellyfin"
 import { slideVariants, slideTransition } from "@/lib/carousel-utils"
 import { useSuggestions } from "@/hooks/use-suggestions"
 import { useAutoCarousel } from "@/hooks/use-auto-carousel"
-import { CarouselDots, CarouselContent } from "@/components/ui/suggestion-carousel"
+import { CarouselDots } from "@/components/ui/suggestion-carousel"
+import Content from "./content"
 import { useRouter } from "next/navigation"
+import AnimatedBackground from "./animated-background"
 
 export default function SuggestionsCarousel() {
   const router = useRouter()
@@ -55,21 +57,7 @@ export default function SuggestionsCarousel() {
 
   return (
     <section className="relative h-[90vh] w-full overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`bg-${currentIndex}`}
-          className="absolute inset-0 bg-cover bg-center blur-xs scale-102 z-0"
-          style={{
-            backgroundImage: backgroundImage
-              ? `url(${backgroundImage})`
-              : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)'
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      </AnimatePresence>
+      <AnimatedBackground imageUrl={backgroundImage} index={currentIndex} />
 
       <div className="absolute inset-0 bg-black/20" />
 
@@ -95,9 +83,9 @@ export default function SuggestionsCarousel() {
               exit="exit"
               transition={slideTransition}
             >
-              <CarouselContent
+              <Content
                 item={currentItem}
-                backgroundImage={backgroundImage}
+                backgroundUrl={backgroundImage}
                 onPlay={handlePlay}
                 onMoreInfo={handleMoreInfo}
                 onPlayTrailer={handlePlayTrailer}

@@ -15,7 +15,7 @@ export default function EpisodeCard({ item }: EpisodeCardProps) {
   const pathname = usePathname()
   const router = useRouter()
   const { api } = useJellyfin()
-  const imageUrl = getItemImageUrl({ item, api: api! })
+  const imageUrl = getItemImageUrl({ item, api: api!, variant: "EpisodeThumb" })
 
   return (
     <div

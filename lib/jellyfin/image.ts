@@ -15,7 +15,8 @@ interface Props {
   | "AlbumPrimary"
   | "SeriesPrimary"
   | "Screenshot"
-  | "Thumb";
+  | "Thumb"
+  | "EpisodeThumb";
 }
 
 export const getItemImageUrl = ({
