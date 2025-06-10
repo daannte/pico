@@ -17,7 +17,7 @@ export const CarouselActionButtons = ({ onPlay, onMoreInfo }: CarouselActionButt
     <Button
       size="lg"
       variant="default"
-      className="w-48 text-lg font-medium uppercase"
+      className="lg:w-48 text-sm lg:text-lg font-medium uppercase"
       onClick={onPlay}
     >
       <Play className="fill-black" size={20} /> Play
@@ -25,7 +25,7 @@ export const CarouselActionButtons = ({ onPlay, onMoreInfo }: CarouselActionButt
     <Button
       size="lg"
       variant="secondary"
-      className="text-foreground font-semibold"
+      className="text-sm lg:text-lg text-foreground font-semibold"
       onClick={onMoreInfo}
     >
       More Info

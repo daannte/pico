@@ -153,7 +153,7 @@ export default function Series() {
         <div className="absolute inset-0 bg-black/20" />
 
         <div
-          className="relative z-10 h-full flex items-center justify-center p-16"
+          className="relative z-10 h-full flex items-center justify-center px-4 py-16 lg:p-16"
         >
           <div className="relative w-full max-w-8xl h-full rounded-lg overflow-hidden shadow-2xl">
             {state.series && (

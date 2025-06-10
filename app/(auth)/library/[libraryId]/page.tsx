@@ -84,7 +84,7 @@ export default function Library() {
   }, [api, user, fetchLibrary])
 
   return (
-    <div className="bg-black h-screen">
+    <div className="bg-black min-h-screen">
       <div className="p-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {state.items && state.items.map((item, i) => (
           <MediaCard key={i} item={item} />

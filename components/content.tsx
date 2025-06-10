@@ -43,12 +43,11 @@ export default function Content({
       <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative h-full flex flex-col">
-        {/* Top Section - Item Info */}
         <div className="flex-1 flex items-center justify-start p-4 sm:p-6 lg:p-8">
           <CarouselItemInfo item={item} onPlay={onPlay} onMoreInfo={onMoreInfo} />
         </div>
 
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 relative">
           {showMetadata && (
             <div className="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6">
               <div className="space-y-3 sm:space-y-4">
@@ -77,7 +76,7 @@ export default function Content({
                 </div>
 
                 {item.Genres && item.Genres.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 pr-16 sm:pr-0">
                     {item.Genres.slice(0, 3).map((genre, index) => (
                       <span
                         key={index}
@@ -97,13 +96,25 @@ export default function Content({
             </div>
           )}
 
+          {/* Mobile: Position trailer inline below metadata */}
           {(trailerThumbnail || backgroundUrl) && (
-            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20">
-              <Trailer
-                thumbnailUrl={trailerThumbnail || backgroundUrl!}
-                onPlay={onPlayTrailer}
-              />
-            </div>
+            <>
+              {/* Mobile trailer - shows below metadata */}
+              <div className="sm:hidden px-4 pb-4">
+                <Trailer
+                  thumbnailUrl={trailerThumbnail || backgroundUrl!}
+                  onPlay={onPlayTrailer}
+                />
+              </div>
+
+              {/* Desktop trailer - positioned absolutely */}
+              <div className="hidden sm:block absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20">
+                <Trailer
+                  thumbnailUrl={trailerThumbnail || backgroundUrl!}
+                  onPlay={onPlayTrailer}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>

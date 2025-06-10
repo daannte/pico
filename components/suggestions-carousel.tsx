@@ -61,8 +61,9 @@ export default function SuggestionsCarousel() {
 
       <div className="absolute inset-0 bg-black/20" />
 
+
       <div
-        className="relative z-10 h-full flex items-center justify-center p-16"
+        className="relative z-10 h-full flex items-center justify-center px-4 py-16 lg:p-16"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >

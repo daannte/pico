@@ -41,7 +41,7 @@ export default function MediaList() {
   return (
     <div className="bg-black min-h-screen w-full text-white">
       <div className="px-4 py-12 sm:px-8 lg:p-16 space-y-12">
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4 sm:mt-0">
           <Button
             variant="ghost"
             onClick={() => setCurrentSection("watching")}
