@@ -10,7 +10,7 @@ import Background from "@/components/background"
 import { AnimatePresence } from "motion/react"
 import Content from "@/components/content"
 import Header from "@/components/header"
-import EpisodeCarousel from "@/components/episode-carousel"
+import ContentCarousel from "@/components/content-carousel"
 
 interface SeriesState {
   episodes: BaseItemDto[]
@@ -38,7 +38,7 @@ export default function Series() {
       const response = await itemsApi.getItems({
         userId: user.Id,
         ids: [seriesId],
-        fields: ["Genres", "Overview"]
+        fields: ["Genres", "Overview", "People"]
       })
       return response.data.Items ? response.data.Items[0] : null
     } catch (error) {
@@ -136,17 +136,14 @@ export default function Series() {
 
   const backdropUrl = state.series ? getItemImageUrl({ item: state.series, api: api!, variant: "Backdrop" }) : null
 
-  const handlePlay = () => {
-  }
+  const handlePlay = () => { }
 
-  const handleMoreInfo = () => {
-  }
+  const handleMoreInfo = () => { }
 
-  const handlePlayTrailer = () => {
-  }
+  const handlePlayTrailer = () => { }
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-black">
       <div className="relative h-[90vh] w-full overflow-hidden">
         <Background imageUrl={backdropUrl} />
 
@@ -175,12 +172,24 @@ export default function Series() {
       </div>
       <div className="mt-4 p-8">
         <div className="flex justify-center items-center">
-          <Header title="Episodes" variant="dark" />
+          <Header title="Episodes" />
         </div>
         <div className="w-full px-8">
           {state.episodes.length > 0 && (
             <section>
-              <EpisodeCarousel items={state.episodes} />
+              <ContentCarousel items={state.episodes} variant="episode" />
+            </section>
+          )}
+        </div>
+      </div>
+      <div className="mt-4 p-8">
+        <div className="flex justify-center items-center">
+          <Header title="Cast" />
+        </div>
+        <div className="w-full px-8">
+          {state.series?.People && state.series.People.length > 0 && (
+            <section>
+              <ContentCarousel items={state.series.People} isCast={true} />
             </section>
           )}
         </div>

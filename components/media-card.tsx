@@ -12,7 +12,7 @@ interface MediaCardProps {
   variant?: "default" | "episode"
 }
 
-export default function MediaCardProps({ item, variant = "default" }: MediaCardProps) {
+export default function MediaCard({ item, variant = "default" }: MediaCardProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { api } = useJellyfin()

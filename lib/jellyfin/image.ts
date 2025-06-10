@@ -1,8 +1,8 @@
 import type { Api } from "@jellyfin/sdk";
-import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models";
+import type { BaseItemDto, BaseItemPerson } from "@jellyfin/sdk/lib/generated-client/models";
 
 interface Props {
-  item: BaseItemDto;
+  item: BaseItemDto | BaseItemPerson;
   api: Api;
   quality?: number;
   width?: number;
@@ -19,6 +19,10 @@ interface Props {
   | "EpisodeThumb";
 }
 
+function isBaseItemDto(item: BaseItemDto | BaseItemPerson): item is BaseItemDto {
+  return item.Type !== "Actor";
+}
+
 export const getItemImageUrl = ({
   item,
   api,
@@ -29,6 +33,12 @@ export const getItemImageUrl = ({
   if (!api || !item?.Id) return null;
 
   const basePath = api.basePath;
+
+  if (!isBaseItemDto(item)) {
+    const tag = item.PrimaryImageTag;
+    if (!tag) return null;
+    return `${basePath}/Items/${item.Id}/Images/Primary?quality=${quality}&tag=${tag}&width=${width}`;
+  }
 
   switch (variant) {
     case "Backdrop":
