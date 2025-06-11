@@ -14,14 +14,16 @@ export const CarouselActionButtons = ({ onPlay, onMoreInfo }: CarouselActionButt
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.4, duration: 0.5 }}
   >
-    <Button
-      size="lg"
-      variant="default"
-      className="lg:w-48 text-sm lg:text-lg font-medium uppercase"
-      onClick={onPlay}
-    >
-      <Play className="fill-black" size={20} /> Play
-    </Button>
+    {onPlay && (
+      <Button
+        size="lg"
+        variant="default"
+        className="lg:w-48 text-sm lg:text-lg font-medium uppercase"
+        onClick={onPlay}
+      >
+        <Play className="fill-black" size={20} /> Play
+      </Button>
+    )}
     <Button
       size="lg"
       variant="secondary"

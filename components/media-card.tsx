@@ -67,11 +67,11 @@ export default function MediaCard({ item, variant = "default" }: MediaCardProps)
         {variant === "episode" && !item.UserData?.Played && (
           <div className="absolute top-2 right-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-yellow-300 shadow-sm" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       </div>
 
       <div
-        className={`absolute bottom-0 left-0 right-0 ${bottomPadding} text-white sm:transform sm:translate-y-full sm:group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black to-transparent`}
+        className={`absolute bottom-0 left-0 right-0 ${bottomPadding} text-white bg-gradient-to-t from-black to-transparent`}
       >
         {variant === "episode" && item.IndexNumber != null && (
           <p className="text-xs text-zinc-400 mb-1">Episode {item.IndexNumber}</p>

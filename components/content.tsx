@@ -96,10 +96,8 @@ export default function Content({
             </div>
           )}
 
-          {/* Mobile: Position trailer inline below metadata */}
           {(trailerThumbnail || backgroundUrl) && (
             <>
-              {/* Mobile trailer - shows below metadata */}
               <div className="sm:hidden px-4 pb-4">
                 <Trailer
                   thumbnailUrl={trailerThumbnail || backgroundUrl!}
@@ -107,7 +105,6 @@ export default function Content({
                 />
               </div>
 
-              {/* Desktop trailer - positioned absolutely */}
               <div className="hidden sm:block absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20">
                 <Trailer
                   thumbnailUrl={trailerThumbnail || backgroundUrl!}

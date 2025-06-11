@@ -35,17 +35,12 @@ export default function SuggestionsCarousel() {
     setCurrentIndex(index)
   }
 
-  const handlePlay = () => {
+  const handleMoreInfo = () => {
     if (currentItem.Type == "Series") {
       router.push(`/series/${currentItem.Id}`)
     } else if (currentItem.Type == "Movie") {
       router.push(`/movies/${currentItem.Id}`)
     }
-  }
-
-  const handleMoreInfo = () => {
-    // TODO: Implement more info functionality
-    console.log("More info:", currentItem.Name)
   }
 
   const handlePlayTrailer = () => {
@@ -87,7 +82,6 @@ export default function SuggestionsCarousel() {
               <Content
                 item={currentItem}
                 backgroundUrl={backgroundImage}
-                onPlay={handlePlay}
                 onMoreInfo={handleMoreInfo}
                 onPlayTrailer={handlePlayTrailer}
               />
